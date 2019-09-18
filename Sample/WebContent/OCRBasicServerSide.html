@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Scan and OCR | Dynamic Web TWAIN SDK | Dynamsoft</title>
+    <meta http-equiv="description"
+        content="The sample demonstrates how to scan documents or import local images in browsers with Dynamic Web TWAIN, and then perform OCR at the client side or upload to the server to OCR there and return the result." />
+    <script src="https://unpkg.com/dwt/dist/dynamsoft.webtwain.min.js"> </script>
+    <link rel="stylesheet" href="Style/ds.demo.css">
+</head>
+
+<body>
+    <div id="main">
+        <div class="container">
+            <div class="ct-lt clearfix">
+                <div id="dwtcontrolContainer"></div>
+            </div>
+            <div class="ct-rt">
+                <div class="content clearfix">
+                    <div>
+                        <ul class="lt">
+                            <li>
+                                <input type="button" value="Scan" onclick="AcquireImage();" class="btn w90p" />
+                            </li>
+                            <li>Language:</li>
+                            <li>Output Format:</li>
+                            <li>Upload Format:</li>
+                            <li>
+                                <input type="button" value="Upload and OCR" onclick="DoOCR(false);"
+                                    class="mt20 w90p btn bgBlue" />
+                            </li>
+                        </ul>
+                        <ul class="rt">
+                            <li>
+                                <input type="button" value="Open a Local Image" onclick="LoadImages();"
+                                    class="btn w100p" />
+                            </li>
+                            <li>
+                                <select size="1" id="ddlLanguages" class="w100p">
+                                </select>
+                            </li>
+                            <li>
+                                <select size="1" id="ddlOCROutputFormat" class="w100p">
+                                </select>
+                            </li>
+                            <li>
+                                <select size="1" id="uploadFormat" class="w100p">
+                                </select>
+                            </li>
+                            <li>
+                                <input type="button" value="Upload a local file and OCR" onclick="DoOCR(true);"
+                                    class="mt20 w100p btn bgBlue" style="min-width:130px;" />
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <input type="button" value="Delete Current Image" onclick="RemoveSelected();"
+                            class="mb20 w100p btn" />
+                    </div>
+                    <div id="DWTcontainerBtm" class="clearfix">
+                        <p>OCR Result: (double click to clear)</p>
+                        <div id="divNoteMessage"> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="ocrbasicserverside.js"></script>
+</body>
+
+</html>
