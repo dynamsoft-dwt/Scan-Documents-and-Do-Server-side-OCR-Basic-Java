@@ -9,7 +9,6 @@ window.onload = function () {
 	 * 3. Change Dynamsoft.WebTwainEnv.ResourcesPath to point to the full version 
 	 *    resource files that you obtain after purchasing a key
 	 */
-	Dynamsoft.WebTwainEnv.Trial = true;
 	Dynamsoft.WebTwainEnv.ProductKey = "t00901wAAAF+u0oFLI39wRNB580cu3kJSIZtbAcR5aCChp+BFa+RGTGv4L2zaA7Q4fzLjNbZJF55lzg9BdnPG5aZjeJPOJUTwD+r5izfQJtguoC4BNSFofgBZwyta";
 	//Dynamsoft.WebTwainEnv.ProductKey = "A-Valid-Product-Key";
 	//Dynamsoft.WebTwainEnv.ResourcesPath = "https://tst.dynamsoft.com/libs/dwt/15.0";
