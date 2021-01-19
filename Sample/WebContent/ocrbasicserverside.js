@@ -10,7 +10,7 @@ window.onload = function () {
 	 *    resource files that you obtain after purchasing a key
 	 */
 	Dynamsoft.WebTwainEnv.Trial = true;
-	Dynamsoft.WebTwainEnv.ProductKey = "t0124vQIAAFhThFIfuWvsMIozirCJTtJoF9Nugjk2fcgbWoe/0UZAxpPq0lHSddtG0eXm3jctDjjTA0iSgQ4f37y86xyHur24PA6YkTnsGOn9tVZjPybzZy/uzNEFN/KNDBjzDbl9BL3dE/zOj5EBY74ht0+7s5qyKNIBxcmLIA=="
+	Dynamsoft.WebTwainEnv.ProductKey = "t00901wAAAF+u0oFLI39wRNB580cu3kJSIZtbAcR5aCChp+BFa+RGTGv4L2zaA7Q4fzLjNbZJF55lzg9BdnPG5aZjeJPOJUTwD+r5izfQJtguoC4BNSFofgBZwyta";
 	//Dynamsoft.WebTwainEnv.ProductKey = "A-Valid-Product-Key";
 	//Dynamsoft.WebTwainEnv.ResourcesPath = "https://tst.dynamsoft.com/libs/dwt/15.0";
 
@@ -69,10 +69,10 @@ var
 function Dynamsoft_OnReady() {
 	DWObject = Dynamsoft.WebTwainEnv.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
 	if (DWObject) {
-		DWObject.Width = 504;
-		DWObject.Height = 599;
-		DWObject.RegisterEvent("OnImageAreaSelected", Dynamsoft_OnImageAreaSelected);
-		DWObject.RegisterEvent("OnImageAreaDeSelected", Dynamsoft_OnImageAreaDeselected);
+		DWObject.Viewer.width = 504;
+		DWObject.Viewer.height = 599;
+		DWObject.Viewer.on("pageAreaSelected", Dynamsoft_OnImageAreaSelected);
+		DWObject.Viewer.on("pageAreaUnselected", Dynamsoft_OnImageAreaDeselected);
 		DWObject.RegisterEvent('OnGetFilePath', OCRALocalFile);
 		_iLeft = 0;
 		_iTop = 0;
@@ -96,7 +96,7 @@ function Dynamsoft_OnReady() {
 			document.getElementById("uploadFormat").options.add(new Option(UploadFormat[i].desc, i));
 		document.getElementById("ddlLanguages").selectedIndex = 4;
 		document.getElementById("uploadFormat").selectedIndex = 4;
-		DWObject.RegisterEvent("OnTopImageInTheViewChanged", Dynamsoft_OnTopImageInTheViewChanged);
+		DWObject.Viewer.on("topPageChanged", Dynamsoft_OnTopImageInTheViewChanged);
 		if (DWObject.Addon.PDF.IsModuleInstalled()) {
 			/** PDFR already installed */
 		}
@@ -104,11 +104,14 @@ function Dynamsoft_OnReady() {
 }
 
 
-function Dynamsoft_OnImageAreaSelected(index, left, top, right, bottom, indexOfArea) {
-	if (arySelectedAreas.length + 2 > indexOfArea)
-		arySelectedAreas[indexOfArea - 1] = [index, left, top, right, bottom, indexOfArea];
-	else
-		arySelectedAreas.push(index, left, top, right, bottom, indexOfArea);
+function Dynamsoft_OnImageAreaSelected(index, rect) {
+	if (rect.length > 0) {
+        var currentRect = rect[rect.length - 1];
+		if (arySelectedAreas.length + 2 > rect.length)
+			arySelectedAreas[rect.length - 1] = [index, currentRect.x, currentRect.y, currentRect.x + currentRect.width, currentRect.y + currentRect.heidht, rect.length];
+		else
+			arySelectedAreas.push(index, currentRect.x, currentRect.y, currentRect.x + currentRect.width, currentRect.y + currentRect.heidht, rect.length);
+	}
 }
 
 function Dynamsoft_OnImageAreaDeselected(index) {
