@@ -68,7 +68,11 @@ public class FileLoadServlet extends HttpServlet {
         DiskFileItemFactory factory = new DiskFileItemFactory();
  
         String path = this.getServletContext().getRealPath("/uploadTemp");  
-        factory.setRepository(new File(path)); 
+		File savefolder=new File(path);
+        if(savefolder.exists()==false){
+            savefolder.mkdir();
+        }
+        factory.setRepository(savefolder); 
         factory.setSizeThreshold(1024*1024) ;  
  
         ServletFileUpload upload = new ServletFileUpload(factory);  
