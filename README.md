@@ -28,6 +28,8 @@ Open /Sample/.project in Eclipse, add a runtime server (Tomcat) and start it. Th
 
 Option 2:
 
+Copy folder /Sample/src/com to /Sample/WebContent/WEB-INF/classes
+
 Deploy the sample in `\Sample\WebContent\` to Tomcat (typically under `C:\Program Files (x86)\Apache Software Foundation\Tomcat 9.0\webapps`) and navigate to `http://localhost:8080/WebContent/OCRBasicServerSide.html`.
 
 ## References:

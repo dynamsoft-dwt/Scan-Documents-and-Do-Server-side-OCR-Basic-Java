@@ -1,17 +1,17 @@
 window.onload = function () {
-	Dynamsoft.WebTwainEnv.AutoLoad = false;
-	Dynamsoft.WebTwainEnv.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: '100%', Height: '600px' }];
-	Dynamsoft.WebTwainEnv.RegisterEvent('OnWebTwainReady', Dynamsoft_OnReady);
+	Dynamsoft.DWT.AutoLoad = false;
+	Dynamsoft.DWT.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: '100%', Height: '600px' }];
+	Dynamsoft.DWT.RegisterEvent('OnWebTwainReady', Dynamsoft_OnReady);
 	/**
 	 * In order to use the full version, do the following
-	 * 1. Replace Dynamsoft.WebTwainEnv.ProductKey with a full version key
-	 * 2. Change Dynamsoft.WebTwainEnv.ResourcesPath to point to the full version 
+	 * 1. Replace Dynamsoft.DWT.ProductKey with a full version key
+	 * 2. Change Dynamsoft.DWT.ResourcesPath to point to the full version 
 	 *    resource files that you obtain after purchasing a key
 	 */
-	Dynamsoft.WebTwainEnv.ProductKey = "t00901wAAAF+u0oFLI39wRNB580cu3kJSIZtbAcR5aCChp+BFa+RGTGv4L2zaA7Q4fzLjNbZJF55lzg9BdnPG5aZjeJPOJUTwD+r5izfQJtguoC4BNSFofgBZwyta";
-	Dynamsoft.WebTwainEnv.ResourcesPath = 'https://unpkg.com/dwt/dist/';
+	Dynamsoft.DWT.ProductKey = "t00891wAAAEFI4LxiTj1i25NNRIf2JmEOrbXv3jMNfvvxAuMh9vm8+OxP/GoAFy1qDRebTFKcW0OsELrReNW7oVZUcKOYNorvws58twDvIE9Q0wAmJ2XcbmcVK6Q=";
+	Dynamsoft.DWT.ResourcesPath = 'https://unpkg.com/dwt/dist/';
 
-	Dynamsoft.WebTwainEnv.Load();
+	Dynamsoft.DWT.Load();
 };
 
 var DWObject, CurrentPath, strhttp, _strPort, uploadBeforeOCR = false, arySelectedAreas = [],
@@ -56,15 +56,15 @@ var
 		{ desc: "Text PDF", val: EnumDWT_OCROutputFormat.OCROF_PDFPLAINTEXT },
 		{ desc: "Image-over-text PDF", val: EnumDWT_OCROutputFormat.OCROF_PDFIMAGEOVERTEXT }
 	], UploadFormat = [
-		{ desc: "BMP", ext: ".bmp", val: EnumDWT_ImageType.IT_BMP },
-		{ desc: "JPG", ext: ".jpg", val: EnumDWT_ImageType.IT_JPG },
-		{ desc: "TIF", ext: ".tif", val: EnumDWT_ImageType.IT_TIF },
-		{ desc: "PNG", ext: ".png", val: EnumDWT_ImageType.IT_PNG },
-		{ desc: "PDF", ext: ".pdf", val: EnumDWT_ImageType.IT_PDF }
+		{ desc: "BMP", ext: ".bmp", val: Dynamsoft.DWT.EnumDWT_ImageType.IT_BMP },
+		{ desc: "JPG", ext: ".jpg", val: Dynamsoft.DWT.EnumDWT_ImageType.IT_JPG },
+		{ desc: "TIF", ext: ".tif", val: Dynamsoft.DWT.EnumDWT_ImageType.IT_TIF },
+		{ desc: "PNG", ext: ".png", val: Dynamsoft.DWT.EnumDWT_ImageType.IT_PNG },
+		{ desc: "PDF", ext: ".pdf", val: Dynamsoft.DWT.EnumDWT_ImageType.IT_PDF }
 	];
 
 function Dynamsoft_OnReady() {
-	DWObject = Dynamsoft.WebTwainEnv.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+	DWObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
 	if (DWObject) {
 		DWObject.Viewer.width = 504;
 		DWObject.Viewer.height = 599;
@@ -105,9 +105,9 @@ function Dynamsoft_OnImageAreaSelected(index, rect) {
 	if (rect.length > 0) {
         var currentRect = rect[rect.length - 1];
 		if (arySelectedAreas.length + 2 > rect.length)
-			arySelectedAreas[rect.length - 1] = [index, currentRect.x, currentRect.y, currentRect.x + currentRect.width, currentRect.y + currentRect.heidht, rect.length];
+			arySelectedAreas[rect.length - 1] = [index, currentRect.x, currentRect.y, currentRect.x + currentRect.width, currentRect.y + currentRect.height, rect.length];
 		else
-			arySelectedAreas.push(index, currentRect.x, currentRect.y, currentRect.x + currentRect.width, currentRect.y + currentRect.heidht, rect.length);
+			arySelectedAreas.push(index, currentRect.x, currentRect.y, currentRect.x + currentRect.width, currentRect.y + currentRect.height, rect.length);
 	}
 }
 
@@ -139,7 +139,7 @@ function LoadImages() {
 	if (DWObject) {
 		if (DWObject.Addon && DWObject.Addon.PDF) {
 			DWObject.Addon.PDF.SetResolution(300);
-			DWObject.Addon.PDF.SetConvertMode(EnumDWT_ConvertMode.CM_RENDERALL);
+			DWObject.Addon.PDF.SetConvertMode(Dynamsoft.DWT.EnumDWT_ConvertMode.CM_RENDERALL);
 		}
 		uploadBeforeOCR = false;
 		DWObject.LoadImageEx('', 5,
@@ -196,12 +196,12 @@ function DoOCR(bLocalFile) {
 				_strPort = ':' + _strPort;
 			var imageType = UploadFormat[document.getElementById("uploadFormat").selectedIndex].val;
 			switch (imageType) {
-				case EnumDWT_ImageType.IT_BMP:
-				case EnumDWT_ImageType.IT_JPG:
-				case EnumDWT_ImageType.IT_PNG:
+				case Dynamsoft.DWT.EnumDWT_ImageType.IT_BMP:
+				case Dynamsoft.DWT.EnumDWT_ImageType.IT_JPG:
+				case Dynamsoft.DWT.EnumDWT_ImageType.IT_PNG:
 					aryToOCR = [DWObject.CurrentImageIndexInBuffer]; break;
-				case EnumDWT_ImageType.IT_TIF:
-				case EnumDWT_ImageType.IT_PDF: break;
+				case Dynamsoft.DWT.EnumDWT_ImageType.IT_TIF:
+				case Dynamsoft.DWT.EnumDWT_ImageType.IT_PDF: break;
 			}
 			var Digital = new Date(),
 				uploadfilename = Digital.getMilliseconds() + UploadFormat[document.getElementById("uploadFormat").selectedIndex].ext;
@@ -209,7 +209,7 @@ function DoOCR(bLocalFile) {
 				strhttp + '//' + location.hostname + _strPort + ocrActionOnServer,
 				aryToOCR,
 				imageType,
-				EnumDWT_UploadDataFormat.Binary,
+				Dynamsoft.DWT.EnumDWT_UploadDataFormat.Binary,
 				uploadfilename,
 				function () { console.log('upload success with no returned info'); },
 				OnOCRResultReturned
